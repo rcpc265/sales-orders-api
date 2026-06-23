@@ -70,24 +70,24 @@ const OrderDetails = () => {
         
         <div className="glass-panel flex items-center p-2 gap-2" style={{ borderRadius: 'var(--radius-xl)' }}>
           <button 
-            onClick={() => handleStatusUpdate('processing')} 
+            onClick={() => handleStatusUpdate('confirmed')} 
             disabled={updating || order.status !== 'pending'}
             className="btn" 
-            style={{ background: order.status === 'processing' ? 'rgba(99,102,241,0.2)' : 'transparent', color: order.status === 'processing' ? '#818cf8' : 'var(--text-muted)' }}
+            style={{ background: order.status === 'confirmed' ? 'rgba(99,102,241,0.2)' : 'transparent', color: order.status === 'confirmed' ? '#818cf8' : 'var(--text-muted)' }}
           >
-            <RefreshCw size={16} /> Processing
+            <RefreshCw size={16} /> Confirm
           </button>
           <button 
-            onClick={() => handleStatusUpdate('completed')} 
-            disabled={updating || order.status !== 'processing'}
+            onClick={() => handleStatusUpdate('shipped')} 
+            disabled={updating || order.status !== 'confirmed'}
             className="btn" 
-            style={{ background: order.status === 'completed' ? 'rgba(16,185,129,0.2)' : 'transparent', color: order.status === 'completed' ? '#34d399' : 'var(--text-muted)' }}
+            style={{ background: order.status === 'shipped' ? 'rgba(16,185,129,0.2)' : 'transparent', color: order.status === 'shipped' ? '#34d399' : 'var(--text-muted)' }}
           >
-            <CheckCircle size={16} /> Complete
+            <CheckCircle size={16} /> Ship
           </button>
           <button 
             onClick={() => handleStatusUpdate('delivered')} 
-            disabled={updating || order.status !== 'completed'}
+            disabled={updating || order.status !== 'shipped'}
             className="btn" 
             style={{ background: order.status === 'delivered' ? 'rgba(16,185,129,0.2)' : 'transparent', color: order.status === 'delivered' ? '#34d399' : 'var(--text-muted)' }}
           >

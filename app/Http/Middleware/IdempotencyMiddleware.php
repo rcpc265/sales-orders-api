@@ -25,13 +25,18 @@ class IdempotencyMiddleware
         $cacheKey = 'idempotency_' . $idempotencyKey;
 
         if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
+            $cached = Cache::get($cacheKey);
+            return response($cached['content'], $cached['status'])->withHeaders($cached['headers']);
         }
 
         $response = $next($request);
 
         // Cache the response for 24 hours (86400 seconds)
-        Cache::put($cacheKey, $response, 86400);
+        Cache::put($cacheKey, [
+            'content' => $response->getContent(),
+            'status' => $response->getStatusCode(),
+            'headers' => $response->headers->all()
+        ], 86400);
 
         return $response;
     }
