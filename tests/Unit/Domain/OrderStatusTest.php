@@ -1,47 +1,38 @@
 <?php
 
-namespace Tests\Unit\Domain;
-
 use App\Enums\OrderStatus;
-use PHPUnit\Framework\TestCase;
 
-class OrderStatusTest extends TestCase
-{
-    public function test_pending_can_transition_to_confirmed(): void
-    {
-        // Given
-        $status = OrderStatus::PENDING;
+it('allows pending to transition to confirmed', function () {
+    // Given
+    $status = OrderStatus::PENDING;
 
-        // When
-        $canTransition = $status->canTransitionTo(OrderStatus::CONFIRMED);
+    // When
+    $canTransition = $status->canTransitionTo(OrderStatus::CONFIRMED);
 
-        // Then
-        $this->assertTrue($canTransition);
-    }
+    // Then
+    expect($canTransition)->toBeTrue();
+});
 
-    public function test_pending_cannot_transition_to_delivered(): void
-    {
-        // Given
-        $status = OrderStatus::PENDING;
+it('prevents pending from transitioning to delivered', function () {
+    // Given
+    $status = OrderStatus::PENDING;
 
-        // When
-        $canTransition = $status->canTransitionTo(OrderStatus::DELIVERED);
+    // When
+    $canTransition = $status->canTransitionTo(OrderStatus::DELIVERED);
 
-        // Then
-        $this->assertFalse($canTransition);
-    }
+    // Then
+    expect($canTransition)->toBeFalse();
+});
 
-    public function test_delivered_cannot_transition_to_any_status(): void
-    {
-        // Given
-        $status = OrderStatus::DELIVERED;
+it('prevents delivered from transitioning to any status', function () {
+    // Given
+    $status = OrderStatus::DELIVERED;
 
-        // When
-        $canTransitionToCancelled = $status->canTransitionTo(OrderStatus::CANCELLED);
-        $canTransitionToPending = $status->canTransitionTo(OrderStatus::PENDING);
+    // When
+    $canTransitionToCancelled = $status->canTransitionTo(OrderStatus::CANCELLED);
+    $canTransitionToPending = $status->canTransitionTo(OrderStatus::PENDING);
 
-        // Then
-        $this->assertFalse($canTransitionToCancelled);
-        $this->assertFalse($canTransitionToPending);
-    }
-}
+    // Then
+    expect($canTransitionToCancelled)->toBeFalse();
+    expect($canTransitionToPending)->toBeFalse();
+});

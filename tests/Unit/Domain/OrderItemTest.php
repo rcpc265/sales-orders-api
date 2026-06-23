@@ -1,36 +1,31 @@
 <?php
 
-namespace Tests\Unit\Domain;
-
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Tests\TestCase;
 
-class OrderItemTest extends TestCase
-{
-    public function test_order_item_has_expected_fillable_attributes(): void
-    {
-        // Given
-        $item = new OrderItem();
+uses(TestCase::class);
 
-        // When
-        $fillable = $item->getFillable();
+it('has expected fillable attributes', function () {
+    // Given
+    $item = new OrderItem();
 
-        // Then
-        $this->assertEquals(['order_id', 'product_id', 'product_name', 'product_price', 'quantity', 'subtotal'], $fillable);
-    }
+    // When
+    $fillable = $item->getFillable();
 
-    public function test_order_item_belongs_to_order(): void
-    {
-        // Given
-        $item = new OrderItem();
+    // Then
+    expect($fillable)->toEqual(['order_id', 'product_id', 'product_name', 'product_price', 'quantity', 'subtotal']);
+});
 
-        // When
-        $relation = $item->order();
+it('belongs to order', function () {
+    // Given
+    $item = new OrderItem();
 
-        // Then
-        $this->assertInstanceOf(BelongsTo::class, $relation);
-        $this->assertInstanceOf(Order::class, $relation->getRelated());
-    }
-}
+    // When
+    $relation = $item->order();
+
+    // Then
+    expect($relation)->toBeInstanceOf(BelongsTo::class);
+    expect($relation->getRelated())->toBeInstanceOf(Order::class);
+});

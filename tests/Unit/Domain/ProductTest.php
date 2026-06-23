@@ -1,21 +1,14 @@
 <?php
 
-namespace Tests\Unit\Domain;
-
 use App\Models\Product;
-use Tests\TestCase;
 
-class ProductTest extends TestCase
-{
-    public function test_product_has_expected_fillable_attributes(): void
-    {
-        // Given
-        $product = new Product();
+it('has expected fillable attributes', function () {
+    // Given
+    $product = new Product();
 
-        // When
-        $fillable = $product->getFillable();
+    // When
+    $fillable = $product->getFillable();
 
-        // Then
-        $this->assertEquals(['name', 'sku', 'price', 'stock'], $fillable);
-    }
-}
+    // Then
+    expect($fillable)->toEqual(['name', 'sku', 'price', 'stock']);
+});

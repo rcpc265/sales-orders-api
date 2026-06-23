@@ -1,50 +1,44 @@
 <?php
 
-namespace Tests\Unit\Domain;
-
 use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Tests\TestCase;
 
-class OrderTest extends TestCase
-{
-    public function test_order_has_expected_fillable_attributes(): void
-    {
-        // Given
-        $order = new Order();
+uses(TestCase::class);
 
-        // When
-        $fillable = $order->getFillable();
+it('has expected fillable attributes', function () {
+    // Given
+    $order = new Order();
 
-        // Then
-        $this->assertEquals(['customer_name', 'customer_email', 'status', 'total_amount'], $fillable);
-    }
+    // When
+    $fillable = $order->getFillable();
 
-    public function test_order_has_many_items(): void
-    {
-        // Given
-        $order = new Order();
+    // Then
+    expect($fillable)->toEqual(['customer_name', 'customer_email', 'status', 'total_amount']);
+});
 
-        // When
-        $relation = $order->items();
+it('has many items', function () {
+    // Given
+    $order = new Order();
 
-        // Then
-        $this->assertInstanceOf(HasMany::class, $relation);
-        $this->assertInstanceOf(OrderItem::class, $relation->getRelated());
-    }
+    // When
+    $relation = $order->items();
 
-    public function test_order_status_is_cast_to_enum(): void
-    {
-        // Given
-        $order = new Order();
+    // Then
+    expect($relation)->toBeInstanceOf(HasMany::class);
+    expect($relation->getRelated())->toBeInstanceOf(OrderItem::class);
+});
 
-        // When
-        $casts = $order->getCasts();
+it('casts status to enum', function () {
+    // Given
+    $order = new Order();
 
-        // Then
-        $this->assertArrayHasKey('status', $casts);
-        $this->assertEquals(OrderStatus::class, $casts['status']);
-    }
-}
+    // When
+    $casts = $order->getCasts();
+
+    // Then
+    expect($casts)->toHaveKey('status');
+    expect($casts['status'])->toBe(OrderStatus::class);
+});
