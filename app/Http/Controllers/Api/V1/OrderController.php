@@ -15,6 +15,11 @@ use App\Services\OrderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Orders
+ *
+ * API endpoints for managing sales orders.
+ */
 class OrderController extends Controller
 {
     public function __construct(
@@ -22,6 +27,13 @@ class OrderController extends Controller
     ) {
     }
 
+    /**
+     * Create a new Order
+     *
+     * Creates a new sales order with the provided items and calculates the total amount automatically.
+     *
+     * @response 201 {"data": {"id": 1, "customer_name": "John Doe", "customer_email": "john@example.com", "status": "pending", "total_amount": 200, "items": [{"id": 1, "product_id": 1, "product_name": "Test Product", "product_price": 100, "quantity": 2, "subtotal": 200}], "created_at": "...", "updated_at": "..."}}
+     */
     public function store(StoreOrderRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -43,6 +55,11 @@ class OrderController extends Controller
         ], 201);
     }
 
+    /**
+     * Get Order details
+     *
+     * Retrieves the details of a specific order, including its items.
+     */
     public function show(Order $order): JsonResponse
     {
         return response()->json([
@@ -50,6 +67,14 @@ class OrderController extends Controller
         ]);
     }
 
+    /**
+     * Update Order Status
+     *
+     * Updates the status of an order following the state machine rules.
+     *
+     * @response 200 {"message": "Status updated successfully"}
+     * @response 422 {"message": "Cannot transition from pending to delivered"}
+     */
     public function updateStatus(UpdateOrderStatusRequest $request, Order $order): JsonResponse
     {
         try {
