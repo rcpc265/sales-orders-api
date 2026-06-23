@@ -21,7 +21,9 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        \Illuminate\Support\Facades\DB::statement("ALTER TABLE orders ADD CONSTRAINT check_status CHECK (status IN ('pending', 'completed', 'cancelled'))");
+        if (\Illuminate\Support\Facades\DB::getDriverName() !== 'sqlite') {
+            \Illuminate\Support\Facades\DB::statement("ALTER TABLE orders ADD CONSTRAINT check_status CHECK (status IN ('pending', 'completed', 'cancelled'))");
+        }
     }
 
     /**
