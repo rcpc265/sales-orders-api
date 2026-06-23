@@ -36,7 +36,9 @@ it('caches and returns the response if idempotency key is provided for the first
 
     // Then
     expect($result)->toBe($response);
-    expect(Cache::get('idempotency_test-key-123'))->toBe($response);
+    $cached = Cache::get('idempotency_test-key-123');
+    expect($cached['content'])->toBe('created');
+    expect($cached['status'])->toBe(201);
 });
 
 it('returns cached response if the same idempotency key is used again', function () {

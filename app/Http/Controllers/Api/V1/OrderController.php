@@ -28,6 +28,18 @@ class OrderController extends Controller
     }
 
     /**
+     * List Orders
+     *
+     * Retrieve a paginated list of the latest orders.
+     *
+     * @group Orders
+     */
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        return OrderResource::collection(Order::latest()->paginate(20));
+    }
+
+    /**
      * Create a new Order
      *
      * Creates a new sales order with the provided items and calculates the total amount automatically.
