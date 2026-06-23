@@ -20,6 +20,10 @@ jobs:
           coverage: pcov
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Prepare Environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
       - name: Run tests with coverage
         run: php artisan test --coverage-clover build/logs/clover.xml --log-junit build/logs/junit.xml
       - name: SonarCloud Scan
